@@ -1,0 +1,37 @@
+picard_dir has been set. You can use java -jar $picard_dir/picard.jar to run the programs.
+00:29:28.730 INFO  NativeLibraryLoader - Loading libgkl_compression.so from jar:file:/cluster/tools/software/picard/2.10.9/picard.jar!/com/intel/gkl/native/libgkl_compression.so
+[Tue Jun 07 00:29:28 EDT 2022] CollectInsertSizeMetrics HISTOGRAM_FILE=/cluster/projects/pughlab/projects/fragmentomics_bedpe_input/insert_sizes/try16_picardInsertSize_fullBAM_alltogether/TGL48_0011_Ct_T_PE_325_WG.merged.sorted_picardInserSizeHisto_wDups.pdf HISTOGRAM_WIDTH=600 MINIMUM_PCT=0.0 INCLUDE_DUPLICATES=true INPUT=/cluster/projects/pughlab/projects/fragmentomics_bedpe_input/original_files/TGL48_0011_Ct_T_PE_325_WG.merged.sorted.bam OUTPUT=/cluster/projects/pughlab/projects/fragmentomics_bedpe_input/insert_sizes/try16_picardInsertSize_fullBAM_alltogether/TGL48_0011_Ct_T_PE_325_WG.merged.sorted_picardInsertSize_wDups.txt    DEVIATIONS=10.0 METRIC_ACCUMULATION_LEVEL=[ALL_READS] ASSUME_SORTED=true STOP_AFTER=0 VERBOSITY=INFO QUIET=false VALIDATION_STRINGENCY=STRICT COMPRESSION_LEVEL=5 MAX_RECORDS_IN_RAM=500000 CREATE_INDEX=false CREATE_MD5_FILE=false GA4GH_CLIENT_SECRETS=client_secrets.json USE_JDK_DEFLATER=false USE_JDK_INFLATER=false
+[Tue Jun 07 00:29:28 EDT 2022] Executing as t110409uhn@node118.uhnh4h.cluster on Linux 3.10.0-1160.36.2.el7.x86_64 amd64; Java HotSpot(TM) 64-Bit Server VM 1.8.0_162-b12; Deflater: Intel; Inflater: Intel; Picard version: 2.10.9-SNAPSHOT
+INFO	2022-06-07 00:29:32	SinglePassSamProgram	Processed     1,000,000 records.  Elapsed time: 00:00:03s.  Time for last 1,000,000:    3s.  Last read position: chr1:102,206,695
+INFO	2022-06-07 00:29:34	SinglePassSamProgram	Processed     2,000,000 records.  Elapsed time: 00:00:05s.  Time for last 1,000,000:    2s.  Last read position: chr1:208,755,085
+INFO	2022-06-07 00:29:37	SinglePassSamProgram	Processed     3,000,000 records.  Elapsed time: 00:00:08s.  Time for last 1,000,000:    2s.  Last read position: chr2:60,146,364
+INFO	2022-06-07 00:29:39	SinglePassSamProgram	Processed     4,000,000 records.  Elapsed time: 00:00:10s.  Time for last 1,000,000:    2s.  Last read position: chr2:166,194,947
+INFO	2022-06-07 00:29:42	SinglePassSamProgram	Processed     5,000,000 records.  Elapsed time: 00:00:13s.  Time for last 1,000,000:    2s.  Last read position: chr3:31,941,670
+INFO	2022-06-07 00:29:44	SinglePassSamProgram	Processed     6,000,000 records.  Elapsed time: 00:00:15s.  Time for last 1,000,000:    2s.  Last read position: chr3:138,001,145
+INFO	2022-06-07 00:29:46	SinglePassSamProgram	Processed     7,000,000 records.  Elapsed time: 00:00:17s.  Time for last 1,000,000:    2s.  Last read position: chr4:49,071,821
+INFO	2022-06-07 00:29:49	SinglePassSamProgram	Processed     8,000,000 records.  Elapsed time: 00:00:20s.  Time for last 1,000,000:    2s.  Last read position: chr4:152,048,833
+INFO	2022-06-07 00:29:51	SinglePassSamProgram	Processed     9,000,000 records.  Elapsed time: 00:00:22s.  Time for last 1,000,000:    2s.  Last read position: chr5:65,341,693
+INFO	2022-06-07 00:29:54	SinglePassSamProgram	Processed    10,000,000 records.  Elapsed time: 00:00:25s.  Time for last 1,000,000:    2s.  Last read position: chr5:174,294,568
+INFO	2022-06-07 00:29:56	SinglePassSamProgram	Processed    11,000,000 records.  Elapsed time: 00:00:27s.  Time for last 1,000,000:    2s.  Last read position: chr6:99,694,178
+INFO	2022-06-07 00:29:58	SinglePassSamProgram	Processed    12,000,000 records.  Elapsed time: 00:00:29s.  Time for last 1,000,000:    2s.  Last read position: chr7:36,905,740
+INFO	2022-06-07 00:30:01	SinglePassSamProgram	Processed    13,000,000 records.  Elapsed time: 00:00:32s.  Time for last 1,000,000:    2s.  Last read position: chr7:145,312,582
+INFO	2022-06-07 00:30:03	SinglePassSamProgram	Processed    14,000,000 records.  Elapsed time: 00:00:34s.  Time for last 1,000,000:    2s.  Last read position: chr8:94,864,605
+INFO	2022-06-07 00:30:05	SinglePassSamProgram	Processed    15,000,000 records.  Elapsed time: 00:00:36s.  Time for last 1,000,000:    2s.  Last read position: chr9:71,291,767
+INFO	2022-06-07 00:30:08	SinglePassSamProgram	Processed    16,000,000 records.  Elapsed time: 00:00:39s.  Time for last 1,000,000:    2s.  Last read position: chr10:35,417,013
+INFO	2022-06-07 00:30:10	SinglePassSamProgram	Processed    17,000,000 records.  Elapsed time: 00:00:41s.  Time for last 1,000,000:    2s.  Last read position: chr10:132,835,440
+INFO	2022-06-07 00:30:12	SinglePassSamProgram	Processed    18,000,000 records.  Elapsed time: 00:00:44s.  Time for last 1,000,000:    2s.  Last read position: chr11:104,283,383
+INFO	2022-06-07 00:30:15	SinglePassSamProgram	Processed    19,000,000 records.  Elapsed time: 00:00:46s.  Time for last 1,000,000:    2s.  Last read position: chr12:75,043,973
+INFO	2022-06-07 00:30:17	SinglePassSamProgram	Processed    20,000,000 records.  Elapsed time: 00:00:48s.  Time for last 1,000,000:    2s.  Last read position: chr13:65,700,366
+INFO	2022-06-07 00:30:19	SinglePassSamProgram	Processed    21,000,000 records.  Elapsed time: 00:00:50s.  Time for last 1,000,000:    2s.  Last read position: chr14:78,887,242
+INFO	2022-06-07 00:30:22	SinglePassSamProgram	Processed    22,000,000 records.  Elapsed time: 00:00:53s.  Time for last 1,000,000:    2s.  Last read position: chr15:95,152,404
+INFO	2022-06-07 00:30:24	SinglePassSamProgram	Processed    23,000,000 records.  Elapsed time: 00:00:55s.  Time for last 1,000,000:    2s.  Last read position: chr17:6,637,610
+INFO	2022-06-07 00:30:27	SinglePassSamProgram	Processed    24,000,000 records.  Elapsed time: 00:00:58s.  Time for last 1,000,000:    2s.  Last read position: chr18:21,203,222
+INFO	2022-06-07 00:30:29	SinglePassSamProgram	Processed    25,000,000 records.  Elapsed time: 00:01:00s.  Time for last 1,000,000:    2s.  Last read position: chr19:43,785,896
+INFO	2022-06-07 00:30:31	SinglePassSamProgram	Processed    26,000,000 records.  Elapsed time: 00:01:03s.  Time for last 1,000,000:    2s.  Last read position: chr21:13,565,679
+INFO	2022-06-07 00:30:34	SinglePassSamProgram	Processed    27,000,000 records.  Elapsed time: 00:01:05s.  Time for last 1,000,000:    2s.  Last read position: chrX:58,139,204
+INFO	2022-06-07 00:30:36	SinglePassSamProgram	Processed    28,000,000 records.  Elapsed time: 00:01:08s.  Time for last 1,000,000:    2s.  Last read position: chr14_GL000225v1_random:111,560
+INFO	2022-06-07 00:31:50	RExecutor	Executing R script via command: Rscript /tmp/script1139071564174488677.R /cluster/projects/pughlab/projects/fragmentomics_bedpe_input/insert_sizes/try16_picardInsertSize_fullBAM_alltogether/TGL48_0011_Ct_T_PE_325_WG.merged.sorted_picardInsertSize_wDups.txt /cluster/projects/pughlab/projects/fragmentomics_bedpe_input/insert_sizes/try16_picardInsertSize_fullBAM_alltogether/TGL48_0011_Ct_T_PE_325_WG.merged.sorted_picardInserSizeHisto_wDups.pdf TGL48_0011_Ct_T_PE_325_WG.merged.sorted.bam 600
+INFO	2022-06-07 00:31:51	ProcessExecutor	null device 
+INFO	2022-06-07 00:31:51	ProcessExecutor	          1 
+[Tue Jun 07 00:31:51 EDT 2022] picard.analysis.CollectInsertSizeMetrics done. Elapsed time: 2.38 minutes.
+Runtime.totalMemory()=1551368192

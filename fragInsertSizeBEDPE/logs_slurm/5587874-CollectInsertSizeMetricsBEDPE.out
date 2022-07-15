@@ -1,0 +1,12 @@
+Job started at Mon Jun 13 08:55:43 EDT 2022
+/cluster/projects/pughlab/projects/fragmentomics_bedpe_input/insert_sizes/scripts
+Removing unmapped/singletons (4, 8), secondary (256), supplementary (2048) reads, or if TLEN == 0
+Extracting tandem reads (16, 32 both set or unset)
+Removing tandem reads (16, 32 both set or unset)
+Getting InsertSize column for TANDEM reads
+Getting InsertSize column for RF reads
+Getting InsertSize METRICS for FR reads
+Getting InsertSize column for FR reads
+Getting InsertSize METRICS for FR reads
+Job ended at Mon Jun 13 15:04:47 EDT 2022
+Job took 6 hours 9 minutes 4 seconds

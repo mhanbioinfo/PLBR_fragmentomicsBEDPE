@@ -1,0 +1,111 @@
+#!/bin/bash
+
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=ming.han@uhn.ca
+#SBATCH -t 1-00:00:00
+#SBATCH -D ./logs_slurm/
+#SBATCH --mem=60G
+#SBATCH -J bedpe2leanbedpe_for_MeDEStrand
+#SBATCH -p himem
+#SBATCH -c 4
+#SBATCH -N 1
+#SBATCH -o %j-%x.out
+#SBATCH -e %j-%x.err
+
+# getopts ###################################################
+usage(){
+    echo 
+    echo "Usage: bash bedpe2leanbedpe_for_MeDEStrand_v?.sh -s [slurm|local] -c num_of_chunks -b bam_input_path -o output_dir -t"
+    echo 
+}
+no_args="true"
+KEEP_TMP=false
+
+## Help 
+Help()
+{
+    # Display Help
+    echo 
+    echo "Processes bam to bedpe in chunks, preserving FLAG and TLEN info."
+    echo
+    echo "Usage: bam2bedpe_pysam_chunks_v?.sh -s [slurm|local] -c num_of_chunks -b bam_input_path -o output_dir -t"
+    echo "options:"
+    echo "-h   [HELP]      print help"
+    echo "-s   [REQUIRED]  type either 'slurm' or 'local', local is with nohup"
+    echo "-c   [REQUIRED]  number of chunks to process in parallel"
+    echo "-b   [REQUIRED]  path to bam input (full path)"
+    echo "-C   [OPTIONAL]  chromosome select file (full path)"
+    echo "-o   [REQUIRED]  output directory (full path)"
+    echo "-t   [OPTIONAL]  keep tmp_dir"
+    echo
+}
+
+## Get the options
+while getopts ":hs:c:b:Co:t" option; do
+    case "${option}" in
+        h) Help
+           exit;;
+        s) SLURMLOCAL=${OPTARG};;
+        c) NUM_OF_CHUNKS=${OPTARG};;
+        b) INPUT_BAM_PATH=${OPTARG};;
+        C) getopts_get_optional_argument $@
+           CHR_SELECT=${OPTARG};;
+        o) OUT_DIR=${OPTARG};;
+        t) KEEP_TMP=true;;
+       \?) echo "Error: Invalid option"
+           exit;;
+    esac
+    no_args="false"
+done
+
+[[ "$no_args" == "true" ]] && { usage; exit 1; }
+
+echo "number of chunks: $NUM_OF_CHUNKS"
+echo "input bam path:   $INPUT_BAM_PATH"
+echo "output path:      $OUT_DIR"
+echo "processing on:    $SLURMLOCAL"
+
+# Main program ##############################################
+
+echo "Job started at "$(date) 
+time1=$(date +%s)
+
+INPUT_DIR="/Users/minghan/bioinfoproj/fragmentomics/pipeline/frag_ratio/data"
+INPUT_FNAME="TGL48_0001_Ct_T_PE_312_WG.merged.sorted_coordSortd.bedpe.gz"
+OUT_DIR="/Users/minghan/bioinfoproj/fragmentomics/pipeline/frag_ratio/fragmentomicsBEDPE_testing"
+DF_4_FRAGM="${INPUT_FNAME%.bedpe.gz}.df4fragm"
+
+gzcat "${INPUT_DIR}/${INPUT_FNAME}" \
+    | awk '(!and($14,0x4)) {print}'                               `## isUnmappedQuery = FALSE` \
+    | awk '(!and($14,0x8)) {print}' \
+    | awk '(!and($15,0x4)) {print}' \
+    | awk '(!and($15,0x8)) {print}' \
+    | awk '($8>=30 && $9>=30) {print}'                            `## mapQ >= 30` \
+    | awk '(and($14,0x2)) {print}'                                `## isProperPair = TRUE` \
+    | awk 'BEGIN{OFS="\t"} (!and($14,0x400) && 
+                            !and($15,0x400)) {print}'             `## isDuplicate = FALSE` \
+    | awk '(!and($14,0x100)) {print}'                             `## isSecondaryAlignment = FALSE` \
+    | awk '(!and($15,0x100)) {print}' \
+    | awk '$1==$4 {print}'                                        `## remove ambiguous and supplementary reads` \
+    | awk '((and($14,0x800) || and($15,0x800)) && $1==$4) {next} {print}' \
+    | awk '(($14 == 113 && $15 == 177) || ($14 == 177 && $15 == 113)) {next} {print}' \
+    | awk '(and($14,0x40) && and($15,0x80)) ||
+           (and($14,0x80) && and($15,0x40)) {print}' \
+    | awk '(!and($14,0x100) && !and($15, 0x100)) ||
+           (and($14,0x100) && and($15, 0x100)) {print}' \
+    | awk '(and($14,0x10) && and($15,0x20)) ||
+           (and($14,0x20) && and($15,0x10)) {print}' \
+    | awk 'BEGIN{OFS="\t"} {print $1, $10, $2+=1, $3, $5+=1, $6}' `## get only columns needed for GAlignmentPairs R object` \
+    | awk 'BEGIN{OFS="\t"} ($2 == "+") {print $1,$3,$6,$2}
+                           ($2 == "-") {print $1,$5,$4,$2}'       `## swap ranges depending on strand, get frag start-end` \
+    > "${OUT_DIR}/${DF_4_FRAGM}"
+
+cat "${OUT_DIR}/${DF_4_FRAGM}" | wc -l
+# 24369546
+
+
+time2=$(date +%s)
+echo "Job ended at "$(date) 
+echo "Job took $(((time2-time1)/3600)) hours $((((time2-time1)%3600)/60)) minutes $(((time2-time1)%60)) seconds"
+
+## EOF

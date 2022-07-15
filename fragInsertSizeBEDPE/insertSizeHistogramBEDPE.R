@@ -1,0 +1,120 @@
+## courtesy of https://github.com/broadinstitute/picard/blob/master/src/main/resources/picard/analysis/insertSizeHistogram.R
+
+## script to generate histogram of insert sizes from metrics file
+## expecting 3 arguments:
+## first is the metrics file with the histogram info
+## second is the output file { output pdf file name }
+## third is a name for the plot { plot title }
+
+args <- commandArgs(trailing=TRUE)
+metricsFile <- args[1]
+pdfFile <- args[2]
+bamName <- args[3]
+histoWidth <- ifelse(length(args) < 4, 0, as.numeric(args[4]))
+
+#metricsFile <- ""
+#pdfFile <- ""
+#bamName <- "TGL48_0011_Ct_T_PE_325_WG.merged"
+#histoWidth <- 600
+
+
+#startFinder <- scan(metricsFile, what="character", sep="\n", quiet=TRUE, blank.lines.skip=FALSE)
+#
+#firstBlankLine=0
+#
+#for (i in 1:length(startFinder)) {
+#  if (startFinder[i] == "") {
+#    if (firstBlankLine==0) {
+#      firstBlankLine=i+1
+#    } else {
+#      secondBlankLine=i+1
+#      break
+#    }
+#  }
+#}
+
+getCumulative <- function(y, yrange) {
+  return ((yrange / sum(y[,1])) * rev(cumsum(rev(y[,1]))))
+}
+
+histogram <- read.table(metricsFile, header=TRUE, sep="\t")
+head(histogram)
+#  insert_size All_Reads.fr_count All_Reads.rf_count All_Reads.tandem_count
+# 1           2                  2                  5                      6
+# 2           3                  5                  7                      8
+# 3           4                  6                  9                      4
+# 4           5                  5                  4                     16
+
+## The histogram has a fr_count/rf_count/tandem_count for each metric "level"
+## This code parses out the distinct levels so we can output one graph per level
+headers <- sapply(sub(".fr_count","",names(histogram),fixed=TRUE), "[[" ,1)
+headers <- sapply(sub(".rf_count","",headers,fixed=TRUE), "[[" ,1)
+headers <- sapply(sub(".tandem_count","",headers,fixed=TRUE), "[[" ,1)
+headers
+
+## Duplicate header names could cause this to barf.  But it really shouldn't when we have "All_reads.fr_count" and
+## "All_reads.rf_count" for example.  Not sure why this would fail, but I care.
+if (any(duplicated(headers))) {
+  levels = unique(headers[2:length(headers)]);
+} else {
+  levels <- c()
+  for (i in 2:length(headers)) {
+    if (!(headers[i] %in% levels)) {
+      levels[length(levels)+1] <- headers[i]
+    }
+  }
+}
+
+pdf(pdfFile)
+
+for (i in 1:length(levels)) {
+  ## Reconstitutes the histogram column headers for this level
+  fr <- paste(levels[i], "fr_count", sep=".")
+  rf <- paste(levels[i], "rf_count", sep=".")
+  tandem <- paste(levels[i], "tandem_count", sep=".")
+
+  frrange = ifelse(fr %in% names(histogram), max(histogram[fr]), 0)
+  rfrange = ifelse(rf %in% names(histogram), max(histogram[rf]), 0)
+  tandemrange = ifelse(tandem %in% names(histogram), max(histogram[tandem]), 0)
+
+  yrange <- max(frrange, rfrange, tandemrange)
+  xrange <- ifelse(histoWidth > 0, histoWidth, max(histogram$insert_size))
+
+  par(mar=c(5,4,4,4));
+  plot(x=NULL, y=NULL,
+       type="n",
+       main=paste("Insert Size Histogram for", levels[i], "\nin file", bamName),
+       xlab="Insert Size",
+       ylab="Count",
+       xlim=range(0, xrange),
+       ylim=range(0, yrange))
+  axis(side=4, at=seq(from=0, to=1, by=0.1)*yrange, labels=seq(from=0, to=1, by=0.10));
+  mtext(side=4, line=2, text="cumulative fraction of reads > insert size");
+
+  colors <- c()
+  labels <- c()
+
+  if (fr %in% names(histogram) ) {
+    lines(histogram$insert_size, as.matrix(histogram[fr]),  type="h", col="red")
+    lines(histogram$insert_size, getCumulative(histogram[fr], frrange), col="darkred", lty=2)
+    colors <- c(colors, "red")
+    labels <- c(labels, "FR")
+  }
+  if (rf %in% names(histogram)) {
+    lines(histogram$insert_size, as.matrix(histogram[rf]),  type="h", col="blue")
+    lines(histogram$insert_size, getCumulative(histogram[rf], rfrange), col="darkblue", lty=2)
+    colors <- c(colors, "blue")
+    labels <- c(labels, "RF")
+  }
+  if (tandem %in% names(histogram)) {
+    lines(histogram$insert_size, as.matrix(histogram[tandem]),  type="h", col="orange")
+    lines(histogram$insert_size, getCumulative(histogram[tandem], tandemrange), col="darkorange", lty=2)
+    colors <- c(colors, "orange")
+    labels <- c(labels, "TANDEM")
+  }
+
+  ## Create the legend
+  legend("topright", labels, fill=colors, col=colors, cex=0.7)
+}
+
+dev.off()

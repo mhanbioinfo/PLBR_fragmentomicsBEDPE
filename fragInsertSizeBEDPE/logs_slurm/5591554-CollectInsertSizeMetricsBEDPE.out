@@ -1,0 +1,14 @@
+Job started at Tue Jun 14 14:47:43 EDT 2022
+Removing unmapped/singletons (4, 8), secondary (256), supplementary (2048) reads, or if TLEN == 0
+Extracting tandem reads (16, 32 both set or unset)
+Removing tandem reads (16, 32 both set or unset)
+Getting InsertSize column for TANDEM reads
+Getting InsertSize METRICS for TANDEM reads
+Getting InsertSize column for RF reads
+Getting InsertSize METRICS for RF reads
+Getting InsertSize column for FR reads
+Getting InsertSize METRICS for FR reads
+Collating InsertSize METRICS for FR, RF, TANDEM
+Join InsertSize DF for FR, RF, TANDEM
+Job ended at Tue Jun 14 15:30:13 EDT 2022
+Job took 0 hours 42 minutes 30 seconds
