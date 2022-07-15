@@ -1,0 +1,12 @@
+*.RMarkdown
+._*
+**/workflow/.*
+**/workflow/rules/.*
+**/workflow/src/.*
+**/workflow/.snakemake/
+**/workflow/logs_slurm/
+**/workflow/slurm*
+**/workflow/test*
+**/example_samplesheets/test*
+.DS_Store
+._.DS_Store
